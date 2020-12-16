@@ -17,6 +17,7 @@ out/
 # Metals
 .bloop/
 .metals/
+.vscode/
 
 # Intellij
 .idea/
