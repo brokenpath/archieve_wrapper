@@ -1,4 +1,4 @@
-package archieve
+package archive
 
 object Wrapper {
   

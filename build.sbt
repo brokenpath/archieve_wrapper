@@ -16,6 +16,7 @@ lazy val archivewrapper: Project = (project in file("archivewrapper"))
   .settings(
     name := "archivewrapper",
    libraryDependencies ++= Seq(
-      "org.apache.commons" % "commons-compress" % "1.20"
+      "org.apache.commons" % "commons-compress" % "1.20",
+      "commons-io" % "commons-io" % "2.8.0"
     )
   )
