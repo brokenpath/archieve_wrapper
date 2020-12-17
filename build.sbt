@@ -6,15 +6,15 @@ lazy val commonSettings = Seq(
 
 lazy val rootProject = (project in file("."))
   .settings(commonSettings: _*)
-  .settings(publishArtifact := false, name := "graalvm-archievewrapper")
-  .aggregate(archievewrapper)
+  .settings(publishArtifact := false, name := "graalvm-archivewrapper")
+  .aggregate(archivewrapper)
 
 
-lazy val archievewrapper: Project = (project in file("archievewrapper"))
+lazy val archivewrapper: Project = (project in file("archivewrapper"))
   .settings(commonSettings: _*)
   .enablePlugins(GraalVMNativeImagePlugin)
   .settings(
-    name := "archievewrapper",
+    name := "archivewrapper",
    libraryDependencies ++= Seq(
       "org.apache.commons" % "commons-compress" % "1.20"
     )
