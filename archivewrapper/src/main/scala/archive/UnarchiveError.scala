@@ -11,3 +11,10 @@ sealed trait UnarchiverError {
 case class CompressorError(e: CompressorException) extends UnarchiverError
 case class ArchiveFormatError(e: ArchiveException) extends UnarchiverError
 case class UnexpectedUnarchiverError(e: Throwable) extends UnarchiverError
+
+
+
+sealed trait Compression
+
+case class Undetectable() extends Compression
+case class Name( name :String) extends Compression
