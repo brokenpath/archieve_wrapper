@@ -1,4 +1,8 @@
 import munit._
+import archive.Unarchiver
+import java.io.BufferedInputStream
+import ammonite.util.Res.Success
+import archive.Name
 
 
 // Archive:  file.zip
@@ -10,9 +14,13 @@ import munit._
 //        35                     2 files
 
 class UnarchiveSuite extends FunSuite {
-   test("hello") {
-      val obtained = 42
-      val expected = 43
-      assertEquals(obtained, expected)
-  }
+  
+
+test("readArchiveStraight"){
+   val stream = new BufferedInputStream(getClass.getResourceAsStream("/file.zip"))
+   val result = Unarchiver.detectCompression(stream)
+   assert(result.isSuccess)
+   assertEquals(result.get,Name("zip"))
+}
+
 }
