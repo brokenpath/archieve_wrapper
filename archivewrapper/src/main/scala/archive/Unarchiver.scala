@@ -42,33 +42,21 @@ import scala.util.{Failure, Success, Try}
   */
 object Unarchiver {
 
-  //Split should be changed to decompress, and getIter, where getIter should return only a single "element" if things are not an archieve
-  //decompress should on right return a Wrapped bufferedstream if its compressed or if its an archieve like zip else it should use left for errors 
-  // "not sure we can even detect if its a error of decompressor or archive so i think following the happy path is the way to go"
-
-
   def open(
     inputStream: InputStream
-  ): Either[UnarchiverError, Iterator[(ArchiveEntry, InputStream)]] =
+  ): Try[Iterator[(ArchiveEntry, InputStream)]] =
   {
     val in = new BufferedInputStream(inputStream)
-    val uncompressedStream : Either[UnarchiverError, InputStream] = uncompress(in) match {
-      case Right(input) => Right(input)
-      case Left(err : CompressorError) => Right(in) //could be its an archive like tar or zip without compression
-      case err => err 
-    }
     for {
-      stream <- uncompressedStream
+      compression <- detectCompression(in)
+      stream <- compression match {
+        case Undetectable() => Try { in }
+        case Name(name) => uncompress(in)
+      } 
       archiveInputStream <- extract(stream)
       iterator = createIterator(archiveInputStream)
     } yield iterator
   }
-
-  def iterate( inputStream: InputStream): Either[UnarchiverError, Iterator[(ArchiveEntry, InputStream)]] =
-    for {
-      archiveInputStream <- extract(inputStream)
-      iterator = createIterator(archiveInputStream)
-    } yield iterator
 
     
   private def createIterator(
@@ -86,7 +74,6 @@ object Unarchiver {
         (latest, new CloseShieldInputStream(archiveInputStream))
     }
 
-    //Throws exceptions in case stream is "bad"
   def detectCompression(stream: BufferedInputStream) : Try[Compression] = 
     Try {
       CompressorStreamFactory.detect(stream)
@@ -99,32 +86,21 @@ object Unarchiver {
 
   def uncompress(
     compressedStream: BufferedInputStream
-  ): Either[UnarchiverError, InputStream] = 
+  ): Try[InputStream] = 
     {
       Try {
-        // We have to wrap in a BufferedInputStream because this method
-        // only takes InputStreams that support the `mark()` method.
-        // val bufferedstream = new BufferedInputStream(compressedStream)
         new CompressorStreamFactory()
             .createCompressorInputStream(compressedStream)
-        } match {
-          case Success(stream)                   => Right(stream)
-          case Failure(err: CompressorException) => Right(compressedStream) //swallow "error" and hope its just because its a tar or a zip.
-          case Failure(err)                      => Left(UnexpectedUnarchiverError(err))
-        }
+        } 
     }
 
   def extract(
     inputStream: InputStream
-  ): Either[UnarchiverError, ArchiveInputStream] =
+  ): Try[ArchiveInputStream] =
     Try {
       // We have to wrap in a BufferedInputStream because this method
       // only takes InputStreams that support the `mark()` method.
       new ArchiveStreamFactory()
         .createArchiveInputStream(new BufferedInputStream(inputStream))
-    } match {
-      case Success(stream)                => Right(stream)
-      case Failure(err: ArchiveException) => Left(ArchiveFormatError(err))
-      case Failure(err)                   => Left(UnexpectedUnarchiverError(err))
     }
 }
