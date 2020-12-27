@@ -18,6 +18,7 @@ out/
 .bloop/
 .metals/
 .vscode/
+.bsp
 
 # Intellij
 .idea/
