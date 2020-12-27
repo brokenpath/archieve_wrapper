@@ -1,5 +1,0 @@
-package archieve
-
-object Wrapper {
-  
-}
