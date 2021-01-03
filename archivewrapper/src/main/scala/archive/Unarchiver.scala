@@ -6,7 +6,8 @@ import org.apache.commons.compress.archivers.{
   ArchiveEntry,
   ArchiveException,
   ArchiveInputStream,
-  ArchiveStreamFactory
+  ArchiveStreamFactory,
+  ArchiveOutputStream
 }
 import org.apache.commons.compress.compressors.{
   CompressorException,

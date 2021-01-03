@@ -21,4 +21,4 @@ newname.zip
 
 with some kind of format like
 
-[[bigfile.zip]]/[[smallfile]]/folder/innerfile.txt --> [[newname.zip]]/innerfile.txt
+[[bigfile.zip]]/[[smallfile.zip]]/folder/innerfile.txt --> [[newname.zip]]/innerfile.txt
