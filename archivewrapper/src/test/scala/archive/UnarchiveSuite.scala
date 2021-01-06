@@ -1,7 +1,6 @@
 import munit._
 import archive.Unarchiver
 import java.io.BufferedInputStream
-import ammonite.util.Res.Success
 import archive.Name
 import archive.Undetectable
 import scala.util.Failure
