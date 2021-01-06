@@ -24,6 +24,7 @@ I would need to create the archive structure first. Otherwise a reversed tree is
       only diffent "root" archives. So b: is not allowed
 -> Second restruction for now,
    will always write to an archive
+-> Third restriction use ArchiveEntry only for now streams for things like s3 streams, can be abstracted later i hope
 
 each entry needs to closed. closeArchiveEntry
 each archive should have finish called on it.
