@@ -9,10 +9,10 @@ import java.nio.file.attribute.FileTime
 import org.apache.commons.compress.utils.IOUtils
 
 object Archiver {
-    case class ArFile(entry: ArchiveEntry, input: InputStream)
+    
     case class Leaf(name: String)
     case class OutPutArchive()
-    case class ArMapping(inputFileName: String, outputFileName, rootArchive: String)
+    case class ArMapping(inputFileName: String, outputFileName: String, rootArchive: String)
 
     def repack(file: ArFile, l: Leaf, os: ArchiveOutputStream) : Try[Unit] = Try {
         val entry = new ZipArchiveEntry(l.name)
@@ -25,7 +25,11 @@ object Archiver {
     }
 
     
-    def copy(input: String, mapping : Seq[ArMapping] ) = ???
+    def copy(archivePath: String, mapping : Seq[ArMapping] ) = {
+        
+
+
+    }
 
 
   

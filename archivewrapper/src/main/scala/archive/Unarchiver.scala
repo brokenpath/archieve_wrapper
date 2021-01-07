@@ -45,7 +45,7 @@ object Unarchiver {
 
   def open(
     inputStream: InputStream
-  ): Try[Iterator[(ArchiveEntry, InputStream)]] =
+  ): Try[Iterator[ArFile]] =
   {
     val in = new BufferedInputStream(inputStream)
     for {
@@ -62,8 +62,8 @@ object Unarchiver {
     
   private def createIterator(
     archiveInputStream: ArchiveInputStream
-  ): Iterator[(ArchiveEntry, InputStream)] =
-    new Iterator[(ArchiveEntry, InputStream)] {
+  ): Iterator[ArFile] =
+    new Iterator[ArFile] {
       private var latest: ArchiveEntry = _
 
       override def hasNext: Boolean = {
@@ -71,8 +71,8 @@ object Unarchiver {
         latest != null
       }
 
-      override def next(): (ArchiveEntry, InputStream) =
-        (latest, new CloseShieldInputStream(archiveInputStream))
+      override def next(): ArFile =
+        ArFile(latest, new CloseShieldInputStream(archiveInputStream))
     }
 
   def detectCompression(stream: BufferedInputStream) : Try[Compression] = 

@@ -32,7 +32,7 @@ class UnarchiveSuite extends FunSuite {
       val archiveEntries = result match {
          case scala.util.Failure(exception) => List()
          case scala.util.Success(value) => value.toList.map(
-            t2 => (t2._1.getName(), t2._1.getSize()))
+            t2 => (t2.entry.getName(), t2.entry.getSize()))
       }
       assertEquals(archiveEntries, expectedEntries)
    }

@@ -2,6 +2,8 @@ package archive
 
 import scala.collection.immutable.HashMap
 import java.io.File
+import org.apache.commons.compress.archivers.ArchiveEntry
+import java.io.InputStream
 
 sealed trait Compression
 
@@ -11,7 +13,7 @@ case class Name( name :String) extends Compression
 // ArchiveEntry
 // ArchiveOutputStream
 
-
+case class ArFile(entry: ArchiveEntry, input: InputStream)
 //Input
 sealed trait Structure
 case class ArchiveStructure(name: String, value:  HashMap[ArchiveFile,Structure]) extends Structure
